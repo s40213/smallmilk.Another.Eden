@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>紫奕网络验证-用户管理</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/materialdesignicons.min.css" rel="stylesheet">
+<link href="../css/style.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../js/jconfirm/jquery-confirm.min.css">
+</head>
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside class="lyear-layout-sidebar">
+      
+      <!-- logo -->
+      <div id="logo" class="sidebar-header">
+        <a href="index.php"><img src="../images/logo-sb.png" title="紫奕网络" alt="紫奕网络" /></a>
+      </div>
+      <div class="lyear-layout-sidebar-scroll"> 
+        
+        <nav class="sidebar-main">
+          <ul class="nav nav-drawer">
+            <li class="nav-item "> <a href="/"><i class="mdi mdi-home"></i> 后台首页</a> </li>
+            <li class="nav-item "> <a href="km.html"><i class="mdi mdi-credit-card"></i>卡密管理</a> </li>
+            <li class="nav-item action"> <a href="user.html"><i class="mdi mdi-account"></i>用户管理</a> </li>
+            
+          </ul>
+        </nav>
+
+      </div>
+      
+    </aside>
+  
+    <!--头部信息-->
+    
+    <header class="lyear-layout-header">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+          </div>
+          
+          <ul class="topbar-right">
+            <li class="dropdown dropdown-profile">
+              <a href="javascript:void(0)" data-toggle="dropdown">
+                <img class="img-avatar img-avatar-48 m-r-10" src="../images/users/g.png" />
+              </a>
+            </li>
+          </ul>
+          
+        </div>
+      </nav>
+    </header>
+    
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <h4>用户管理</h4>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>id</th>
+                        <th>设备码</th>
+                        <th>使用km</th>
+                        <th>到期时间</th>
+                        <th>删除</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        
+        
+                <div class="row">
+                    <div class="col-xs-3"></div>
+            <p class="m-b-0"> Copyright © 2022 by 紫奕网络 </p>
+        </div>
+      </div>
+    
+<textarea id="copy" style="display:none;"></textarea>
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="../js/main.min.js"></script>
+
+<script src="../js/jconfirm/jquery-confirm.min.js"></script>
+
+<!--图表插件-->
+<script type="text/javascript" src="../js/Chart.js"></script>
+<script type="text/javascript">
+$(document).ready(function(e) {
+    $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=yanz',
+            success:function (msg){
+            if(msg["code"] == 0){
+                var user = msg["user"];
+                init(user);
+            }else{
+                location.href='login.html';
+            }
+
+        }
+
+    });
+});
+
+function init(){
+         $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=initimei',
+            success:function (msg){
+                var html = '';
+                
+                for (var i=0;i<msg.length;i++)
+                { 
+                    var id = msg[i].id;
+                    var km = msg[i].km;
+                    var time = msg[i].time;
+                    var imei = msg[i].imei;
+                    var show = '<tr>'+
+                        '<td>'+id+'</td>'+
+                        '<td><a class="btn btn-default btn-xs btn-w-xl">'+imei+'</a></td>'+
+                        '<td><a class="btn btn-default btn-xs btn-w-lg">'+km+'</a></td>'+
+                        '<td><a class="btn btn-default btn-xs btn-w-lg">'+time+'</a></td>'+
+                        '<td><a onClick="deleteimei(\''+imei+'\')" class="btn btn-danger btn-xs btn-w-xs">删除</a></td>'+
+                      '</tr>';
+                    html = html + show;
+                }
+
+                $("#tbody").html(html);
+        }
+
+    });
+}
+
+function deleteimei(imei){
+    $.ajax({
+                url: 'api.php', //请求的u
+                type: 'get', //请求的方式
+                dataType:'json',
+                data: 'ml=deleteimei&imei='+imei,
+                success:function (msg){
+                    if(msg["code"] == 0){
+                    $.alert({
+                        title: '提示',
+                        content: msg["text"],
+		                buttons: {
+			            confirm: {
+			                text: '确认',
+				            btnClass: 'btn-primary',
+				            action: function(){
+				                location.reload();
+        				}
+			         }
+	                }
+                });
+                                
+                }else{
+                    $.alert(msg["text"]);
+                }
+            
+
+                }
+            });
+    
+}
+
+</script>
+</body>
+</html>
