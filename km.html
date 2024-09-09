@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>紫奕网络验证-单设备码</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/materialdesignicons.min.css" rel="stylesheet">
+<link href="../css/style.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../js/jconfirm/jquery-confirm.min.css">
+</head>
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside class="lyear-layout-sidebar">
+      
+      <!-- logo -->
+      <div id="logo" class="sidebar-header">
+        <a href="index.php"><img src="../images/logo-sb.png" title="紫奕网络" alt="紫奕网络" /></a>
+      </div>
+      <div class="lyear-layout-sidebar-scroll"> 
+        
+        <nav class="sidebar-main">
+          <ul class="nav nav-drawer">
+           <li class="nav-item "> <a href="/"><i class="mdi mdi-home"></i> 后台首页</a> </li>
+            <li class="nav-item action"> <a href="km.html"><i class="mdi mdi-credit-card"></i>卡密管理</a> </li>
+            <li class="nav-item "> <a href="user.html"><i class="mdi mdi-account"></i>用户管理</a> </li>
+            
+          </ul>
+        </nav>
+
+      </div>
+      
+    </aside>
+  
+    <!--头部信息-->
+    
+    <header class="lyear-layout-header">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+          </div>
+          
+          <ul class="topbar-right">
+            <li class="dropdown dropdown-profile">
+              <a href="javascript:void(0)" data-toggle="dropdown">
+                <img class="img-avatar img-avatar-48 m-r-10" src="../images/users/g.png" />
+              </a>
+            </li>
+          </ul>
+          
+        </div>
+      </nav>
+    </header>
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                    <div class="col-md-1">
+                        <button class="btn btn-xs btn-primary" onclick="addkm()">添加卡密</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-xs btn-primary" onclick="fzxz()">复制选中</button>
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-xs btn-danger" onclick="plsc()">批量删除</button>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="http://fk.ziyia.cn" class="btn btn-xs btn-success" >发卡网</a>
+                    </div>
+              </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th><input type="checkbox" id="checkAll"></th>
+                        <th>卡密(点击复制)</th>
+                        <th>时间</th>
+                        <th>到期时间</th>
+                        <th>删除</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        
+        <div class="row">
+            <div class="col-xs-3"></div>
+            <p class="m-b-0"> Copyright © 2022 by 紫奕网络 </p>
+        </div>
+        
+      </div>
+    
+<textarea id="copy" style="display:none;"></textarea>
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="../js/main.min.js"></script>
+
+<script src="../js/jconfirm/jquery-confirm.min.js"></script>
+
+<!--图表插件-->
+<script type="text/javascript" src="../js/Chart.js"></script>
+<script type="text/javascript">
+
+$("#checkAll").change(function(e){
+    var check = $(this).prop("checked");
+    $(".checkbox").prop("checked",check);
+    
+});
+
+function fzxz(){
+    var chk_value =[];//定义一个数组
+	$('input[class="checkbox"]:checked').each(function(){//遍历每一个名字为nodes的复选框，其中选中的执行函数
+		chk_value.push($(this).val());//将选中的值添加到数组chk_value中
+	});
+	var selectId = chk_value.join("\n");
+        copyText(selectId);
+}
+
+
+function copyText(str) {
+    $('#copy').text(str).show();
+    var ele = document.getElementById("copy");
+    ele.select();
+    document.execCommand('copy', false, null);
+    $('#copy').hide();
+    $.alert("复制成功");
+}
+
+
+function plsc(){
+    $.confirm({
+        title: '批量删除卡密',
+        content: '' +
+        '<form action="" class="formName">' +
+        '<div class="form-controls">'+
+        '<select name="type" class="form-control" id="s">'+
+        '<option value="1">已用</option>'+
+        '<option value="2">未用</option>'+
+        '<option value="3">全部</option>'+
+        '</select>'+
+        '</div>'+
+        '</form>',
+        buttons: {
+            formSubmit: {
+                text: '提交',
+                btnClass: 'btn-danger',
+                action: function () {
+                    var s = $("#s").val();
+                    $.ajax({
+                        url: 'api.php', //请求的u
+                        type: 'get', //请求的方式
+                        dataType:'json',
+                        data: 'ml=plsc&s='+s,
+                        success:function (msg){
+                            if(msg["code"] == 0){
+                                $.alert({
+                                title: '提示',
+                                content: msg["text"],
+		                        buttons: {
+			                    confirm: {
+				                    text: '确认',
+				                    btnClass: 'btn-primary',
+				                    action: function(){
+				                        location.reload();
+        				            }
+			                       }
+	                	        }
+                            });
+                                
+                            }else{
+                                $.alert(msg["text"]);
+                            }
+
+                        }
+
+                    });
+                    
+                }
+            },
+            cancel: {
+                text: '取消'
+            },
+        },
+        onContentReady: function () {
+            var jc = this;
+            this.$content.find('form').on('submit', function (e) {
+                e.preventDefault();
+                jc.$$formSubmit.trigger('click');
+            });
+        }
+    });
+    
+}
+
+$(document).ready(function(e) {
+    $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=yanz',
+            success:function (msg){
+            if(msg["code"] == 0){
+                var user = msg["user"];
+                init();
+            }else{
+                location.href='login.html';
+            }
+
+        }
+
+    });
+});
+
+function init(){
+         $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=initkm',
+            success:function (msg){
+                var html = '';
+                
+                for (var i=0;i<msg.length;i++)
+                { 
+                    var id = msg[i].id;
+                    var km = msg[i].km;
+                    var time = msg[i].time;
+                    var time2 = msg[i].time2;
+                    var show = '<tr>'+
+                        '<td><input type="checkbox" class = "checkbox" value = "'+km+'"></td>'+
+                        '<td><a onclick = "copyText(\''+km+'\')" class="btn btn-default btn-xs btn-w-lg">'+km+'</a></td>'+
+                        '<td><a class="btn btn-default btn-xs btn-w-xs">'+time+'</a></td>'+
+                        '<td><a class="btn btn-default btn-xs btn-w-lg">'+time2+'</a></td>'+
+                        '<td><a onClick="deletekm(\''+km+'\')" class="btn btn-danger btn-xs btn-w-xs">删除</a></td>'+
+                      '</tr>';
+                    html = html + show;
+                }
+
+                $("#tbody").html(html);
+        }
+
+    });
+}
+
+function deletekm(km){
+    $.ajax({
+                url: 'api.php', //请求的u
+                type: 'get', //请求的方式
+                dataType:'json',
+                data: 'ml=deletekm&km='+km,
+                success:function (msg){
+                    if(msg["code"] == 0){
+                    $.alert({
+                        title: '提示',
+                        content: msg["text"],
+		                buttons: {
+			            confirm: {
+			                text: '确认',
+				            btnClass: 'btn-primary',
+				            action: function(){
+				                location.reload();
+        				}
+			         }
+	                }
+                });
+                                
+                }else{
+                    $.alert(msg["text"]);
+                }
+            
+
+                }
+            });
+    
+}
+
+function addkm(){
+    $.confirm({
+        title: '创建卡密',
+        content: '' +
+        '<form action="" class="formName">' +
+        '<div class="form-controls">'+
+        '<select name="type" class="form-control" id="s">'+
+        '<option value="1">小时卡</option>'+
+        '<option value="2">天卡</option>'+
+        '<option value="3">周卡</option>'+
+        '<option value="4">月卡</option>'+
+        '<option value="5">年卡</option>'+
+        '</select>'+
+        '</div>'+
+        '<br>'+
+        '<div class="form-controls">'+
+        '<select name="type" class="form-control" id="n">'+
+        '<option value="1">一张</option>'+
+        '<option value="2">五张</option>'+
+        '<option value="3">十张</option>'+
+        '<option value="4">五十张</option>'+
+        '<option value="5">一百张</option>'+
+        '</select>'+
+        '</div>'+
+        '</form>',
+        buttons: {
+            formSubmit: {
+                text: '提交',
+                btnClass: 'btn-blue',
+                action: function () {
+                    
+                    var s = $("#s").val();
+                    var n = $("#n").val();
+                    $.ajax({
+                        url: 'api.php', //请求的u
+                        type: 'get', //请求的方式
+                        dataType:'json',
+                        data: 'ml=addkm&n='+n+'&s='+s,
+                        success:function (msg){
+                            if(msg["code"] == 0){
+                                $.alert({
+                                title: '提示',
+                                content: msg["text"],
+		                        buttons: {
+			                    confirm: {
+				                    text: '确认',
+				                    btnClass: 'btn-primary',
+				                    action: function(){
+				                        location.reload();
+        				            }
+			                       }
+	                	        }
+                            });
+                                
+                            }else{
+                                $.alert(msg["text"]);
+                            }
+
+                        }
+
+                    });
+                    
+                }
+            },
+            cancel: {
+                text: '取消'
+            },
+        },
+        onContentReady: function () {
+            var jc = this;
+            this.$content.find('form').on('submit', function (e) {
+                e.preventDefault();
+                jc.$$formSubmit.trigger('click');
+            });
+        }
+    });
+    
+    
+}
+
+
+</script>
+</body>
+</html>
