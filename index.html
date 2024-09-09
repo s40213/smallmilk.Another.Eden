@@ -1,1 +1,472 @@
-<p>"3"<p>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>牛奶网络验证-单设备码</title>
+<link rel="icon" href="favicon.ico" type="image/ico">
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/materialdesignicons.min.css" rel="stylesheet">
+<link href="../css/style.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../js/jconfirm/jquery-confirm.min.css">
+</head>
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside class="lyear-layout-sidebar">
+      
+      <!-- logo -->
+      <div id="logo" class="sidebar-header">
+        <a href="index.php"><img src="../images/logo-sb.png" title="牛奶网络" alt="牛奶网络" /></a>
+      </div>
+      <div class="lyear-layout-sidebar-scroll"> 
+        
+        <nav class="sidebar-main">
+          <ul class="nav nav-drawer">
+            <li class="nav-item action"> <a href="/"><i class="mdi mdi-home"></i> 后台首页</a> </li>
+            <li class="nav-item "> <a href="km.html"><i class="mdi mdi-credit-card"></i>卡密管理</a> </li>
+            <li class="nav-item "> <a href="user.html"><i class="mdi mdi-account"></i>用户管理</a> </li>
+            
+          </ul>
+        </nav>
+
+      </div>
+      
+    </aside>
+  
+    <!--头部信息-->
+    
+    <header class="lyear-layout-header">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+          </div>
+          
+          <ul class="topbar-right">
+            <li class="dropdown dropdown-profile">
+              <a href="javascript:void(0)" data-toggle="dropdown">
+                <img class="img-avatar img-avatar-48 m-r-10" src="../images/users/g.png" />
+              </a>
+            </li>
+          </ul>
+          
+        </div>
+      </nav>
+    </header>
+    
+        <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      <div class="container-fluid">
+        <div class="row">
+          
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="col-md-2">
+                    <h4>数据统计</h4>
+                </div>
+              </div>
+              <div class="card-body">
+                    <div class="input-group m-b-10">
+                    <span class="input-group-addon">已用卡密</span>
+                    <input type="text" class="form-control" id="kmyn"  disabled="disabled">
+                    </div>
+                    <div class="input-group m-b-10">
+                    <span class="input-group-addon">未用卡密</span>
+                    <input type="text" class="form-control" id="kmwn"  disabled="disabled">
+                    </div>
+                    
+                    <div class="input-group m-b-10">
+                    <span class="input-group-addon">卡密总数</span>
+                    <input type="text" class="form-control" id="kmzn"  disabled="disabled">
+                    </div>
+                    <div class="input-group m-b-15">
+                    <span class="input-group-addon">新增用户</span>
+                    <input type="text" class="form-control" id="jun" disabled="disabled">
+                    </div>
+                    <div class="input-group m-b-15">
+                    <span class="input-group-addon">用户总数</span>
+                    <input type="text" class="form-control" id="zun" disabled="disabled">
+                    </div>
+
+              </div>
+            </div>
+          </div>
+          
+        </div> 
+        <div class="row">
+          
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-header">
+                <div class="col-md-2">
+                    <h4>基本信息</h4>
+                </div>
+              </div>
+              <div class="card-body">
+                    <div class="input-group m-b-10">
+                    <span class="input-group-addon" id="basic-addon3">token</span>
+                    <input type="text" class="form-control" id="token" >
+                    </div>
+                    
+                    <div class="input-group m-b-15">
+                    <span class="input-group-addon">Rc4密钥</span>
+                    <input type="text" class="form-control" id="rc4" >
+                    </div>
+                    
+                    <div class="input-group m-b-15">
+                    <button onclick="bao()" class="btn btn-info btn-sm">保存</button>
+                    </div>
+                    
+              </div>
+            </div>
+          </div>
+          
+        </div>  
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                   <div class="row">
+                        <div class="col-xs-8">
+                        <input type="file" id="file" name="example-file-input">
+                        </div>
+                        <div class="col-xs-4">
+                        <button class="btn btn-xs btn-w-xs btn-success" onclick="up()">上传</button>
+                        </div>
+                    </div>
+                <br>
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>文件地址</th>
+                        <th>删除</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody">
+                    </tbody>
+                  </table>
+                </div>
+                
+                    
+              
+              </div>
+            </div>
+          </div>
+          
+        </div>  
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <form class="form-horizontal" onsubmit="return false;">
+                    <div class="form-group">
+                    <label class="col-xs-12" for="example-textarea-input">公告</label>
+                    <div class="col-xs-12">
+                      <textarea class="form-control" id="gg" rows="6"></textarea>
+                    </div>
+                    </div> 
+                    <div class="input-group m-b-15">
+                    <span class="input-group-addon">软件版本(整数)</span>
+                    <input type="number" class="form-control" id="bb" >
+                    </div>
+                    <div class="input-group m-b-15">
+                    <span class="input-group-addon">软件更新地址</span>
+                    <input type="text" class="form-control" id="lj">
+                    </div>
+                    <div class="input-group m-b-15">
+                    <span class="input-group-addon">本次更新内容</span>
+                    <input type="text" class="form-control" id="gxnr">
+                    </div>
+                    <div class="form-group">
+                    <div class="col-xs-12">
+                      <button class="btn btn-primary" onclick="tj()">提交</button>
+                    </div>
+                  </div>
+                
+                
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3"></div>
+            <p class="m-b-0"> Copyright © 2022 by 牛奶网络 </p>
+        </div>
+      </div>
+    
+<textarea id="copy" style="display:none;"></textarea>
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+<style type="text/css">
+#scrollText {
+    width: 400px;
+    margin-right: auto;
+    margin-left: auto;
+}
+</style>
+<script type="text/javascript" src="../js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="../js/main.min.js"></script>
+<script src="../js/jconfirm/jquery-confirm.min.js"></script>
+
+<script>
+$(document).ready(function(e) {
+    $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=yanz',
+            success:function (msg){
+            if(msg["code"] == 0){
+                var token = msg["token"];
+                var rc4 = msg["rc4"];
+                $("#token").val(token);
+                $("#rc4").val(rc4);
+                num();
+                gg();
+            }else{
+                location.href='login.html';
+            }
+
+        }
+
+    });
+});
+
+function up(){
+    var files = $('#file')[0].files
+        if(files.length <= 0) {
+            return $.alert('请选择要上传的文件')
+        }
+        var fd = new FormData()
+        fd.append('avatar',files[0])
+        $.ajax({
+            method:'POST',
+            url:'api.php?ml=up',
+            data:fd,
+                    // 不对FromData中的url进行编码，原样发送
+            processData:false,
+                    // 不修改contentType属性，使用默认
+            contentType:false,
+            success: function(msg) {
+                msg = JSON.parse(msg);
+                code = msg["code"];
+                $.alert(msg["text"]);
+
+            }
+        });
+}
+
+
+function gg(){
+        $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=gg',
+            success:function (msg){
+            var gg = msg["gg"];
+            var bb = msg["bb"];
+            var lj = msg["lj"];
+            var gxnr = msg["gxnr"];
+            $("#gg").val(gg);
+            $("#bb").val(bb);
+            $("#lj").val(lj);
+            $("#gxnr").val(gxnr);
+        }
+    }); 
+}
+
+    
+function num(){
+        $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=num',
+            success:function (msg){
+            var kmzn = msg["kmzn"];
+            var kmwn = msg["kmwn"];
+            var jun = msg["jun"];
+            var zun = msg["zun"];
+            var wl = msg["wl"];
+            
+            $("#kmwn").val(kmwn);
+            $("#kmzn").val(kmzn);
+            $("#kmyn").val(kmzn-kmwn);
+            $("#jun").val(jun);
+            $("#zun").val(zun);
+            var html = '';
+            for (var i=0;i<wl.length;i++)
+                { 
+                    var wj = wl[i].lj;
+                    var n = wl[i].n;
+                    
+                    var show = '<tr>'+
+                        '<td><a >'+wj+'</a></td>'+
+                        '<td><a onClick="deletewj(\''+n+'\')" class="btn btn-danger btn-xs btn-w-xs">删除</a></td>'+
+                        '</tr>';
+                        html = html + show;
+                    
+                }
+
+                $("#tbody").html(html);
+            
+        }
+
+    }); 
+}    
+
+function deletewj(n){
+        $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=deletewj&n='+n,
+            success:function (msg){
+            if(msg["code"] == 0){
+                $.alert({
+                        title: '提示',
+                        content: msg["text"],
+		                buttons: {
+			            confirm: {
+			                text: '确认',
+				            btnClass: 'btn-primary',
+				            action: function(){
+				                location.reload();
+        				}
+			         }
+	                }
+                });
+            }else{
+                $.alert(msg["text"]);
+            }
+
+        }
+
+    });  
+    
+}
+    
+
+function bao(){
+    var rc4 = $("#rc4").val();
+    var token = $("#token").val();
+    if(!rc4){
+        $.alert("请输入rc4");
+    }else{
+            $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=bao&rc4='+rc4+'&token='+token,
+            success:function (msg){
+            if(msg["code"] == 0){
+                $.alert({
+                        title: '提示',
+                        content: msg["text"],
+		                buttons: {
+			            confirm: {
+			                text: '确认',
+				            btnClass: 'btn-primary',
+				            action: function(){
+				                location.reload();
+        				}
+			         }
+	                }
+                });
+            }else{
+                $.alert(msg["text"]);
+            }
+
+        }
+
+    });
+    }
+    
+    
+}
+
+
+function tj(){
+    var gg = $("#gg").val();
+    var bb = $("#bb").val();
+    var lj = $("#lj").val();
+    var gxnr = $("#gxnr").val();
+        $.ajax({
+            url: 'api.php', //请求的u
+            type: 'get', //请求的方式
+            dataType:'json',
+            data: 'ml=tj&gg='+gg+"&bb="+bb+"&lj="+lj+"&gxnr="+gxnr,
+            success:function (msg){
+            if(msg["code"] == 0){
+                $.alert({
+                        title: '提示',
+                        content: msg["text"],
+		                buttons: {
+			            confirm: {
+			                text: '确认',
+				            btnClass: 'btn-primary',
+				            action: function(){
+				                location.reload();
+        				}
+			         }
+	                }
+                });
+            }else{
+                $.alert(msg["text"]);
+            }
+
+        }
+
+    });    
+    
+}
+    
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
